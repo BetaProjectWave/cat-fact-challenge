@@ -3,26 +3,25 @@
 
 We would like you to write an application that provides a RESTful API onto third party data.
 
-We have provided a core skeleton for a Java Spring Boot application. You are asked to use an external API that provides facts about cats. Documentation on the API can be found at: https://alexwohlbruck.github.io/cat-facts/docs/ and the main API you will need to use is https://cat-fact.herokuapp.com/facts
+We have provided a core skeleton for a Java Spring Boot application. You are asked to use an external API that provides facts about cats. Documentation on the API can be found at: https://catfact.ninja/ and the main APIs that you will use will be one or both of https://catfact.ninja/facts and https://catfact.ninja/breeds
 
 We would like you to complete this application with the following requirements:
 
-* Allow a caller to retrieve a random fact about a cat.
-* Allow a caller to query for all cat facts uploaded by a given user.
-* Allow a caller to query for all cat facts in order of most upvoted, identifying the upvoters by name.
+**Basic Requirements**
 
-Stretch goal:
+* Expose suitably designed and implemented endpoints to retrieve the data from the `Cat Facts API Service`
+* Return all cat facts available from the source API as a list of `fact`s
+* Return `fact`s filtered by a provided `keyword` parameter, for example `Egypt`
+* Return all breeds available from the source API as a list of `breed`s
+* Show a data summary response showing the count of all breeds of cats grouped by their `coat` properties
 
-* Enable a caller to do a free text search across the fact library.
+**Stretch Goals**
+
+* Return `breed`s filtered by either a provided `coat` parameter AND/OR a provided `country` parameter
+* Allow a specific `breed` record to be retrieved by a path parameter of the `breed` name
+* Implement `pagination` behaviour that can be applied to one or both of the `fact` and `breed` endpoints
 
 You are free to add additional functionality in addition to the above if you so wish.
-
-We would also like you to consider the following:
-
-* How might you deploy the application
-* How you might optimize the application for performance
-* How might you secure the API
-* How you might extend the application in the future.
 
 You may tackle the problem in any suitable development environment. If you so wish, you can tackle the problem using a different language or framework. 
 
