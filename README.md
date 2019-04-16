@@ -9,11 +9,11 @@ We would like you to complete this application with the following requirements:
 
 **Basic Requirements**
 
-* List all cat facts available from the source API as a list of `fact`s (i.e. not including the wrapped response from `catfact.ninja`)
-    * Return `fact`s filtered by a provided `keyword` parameter. For example `Egypt`
-* List all breeds available from the source API as a list of `breed`s (i.e. not including the wrapped response from `catfact.ninja`)
-* Show a data summary response showing the count of all breeds of cats grouped by their `coat` properties
 * Expose suitably designed and implemented endpoints to retrieve the data from the `Cat Facts API Service`
+* Return all cat facts available from the source API as a list of `fact`s
+* Return `fact`s filtered by a provided `keyword` parameter, for example `Egypt`
+* Return all breeds available from the source API as a list of `breed`s
+* Show a data summary response showing the count of all breeds of cats grouped by their `coat` properties
 
 **Stretch Goals**
 
@@ -22,14 +22,6 @@ We would like you to complete this application with the following requirements:
 * Implement `pagination` behaviour that can be applied to one or both of the `fact` and `breed` endpoints
 
 You are free to add additional functionality in addition to the above if you so wish.
-
-We would also like you to consider the following:
-
-* How might you deploy the application
-* RESTful API design
-* How you might optimize the application for performance
-* How might you secure the API
-* How you might extend the application in the future.
 
 You may tackle the problem in any suitable development environment. If you so wish, you can tackle the problem using a different language or framework. 
 
