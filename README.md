@@ -5,12 +5,13 @@ We would like you to write an application that provides a RESTful API onto third
 
 We have provided a core skeleton for a Java Spring Boot application. You are asked to use an external API that provides facts about cats. Documentation on the API can be found at: https://catfact.ninja/ and the main APIs that you will use will be one or both of https://catfact.ninja/facts and https://catfact.ninja/breeds
 
-We would like you to complete this application with the following requirements:
+An initial endpoint has been defined at `/facts` which will return a listing of all cat facts available in the target API service using a `FactDTO`.
+
+We would like you to add to this application with the following requirements:
 
 **Basic Requirements**
 
 * Expose suitably designed and implemented endpoints to retrieve the data from the `Cat Facts API Service`
-* Return all cat facts available from the source API as a list of `fact`s
 * Return `fact`s filtered by a provided `keyword` parameter, for example `Egypt`
 * Return all breeds available from the source API as a list of `breed`s
 * Show a data summary response showing the count of all breeds of cats grouped by their `coat` properties
