@@ -7,12 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = CatFactApiApplication.class)
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = CatFactApiApplication.class)
 public class CatFactApiApplicationTest {
 
     @Autowired
@@ -20,7 +18,7 @@ public class CatFactApiApplicationTest {
 
     @Test
     public void contextLoads() {
-        assertThat(applicationContext, is(notNullValue()));
+        assertThat(applicationContext).isNotNull();
     }
 
 }
