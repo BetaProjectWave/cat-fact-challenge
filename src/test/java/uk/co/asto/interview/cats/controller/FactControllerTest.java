@@ -41,4 +41,58 @@ public class FactControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+    @Test
+    public void shouldReturnAllFactsWithNoFilter() throws Exception {
+        final Integer unfilteredFactsCount = 332;
+
+        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
+                "/facts",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<FactDTO>>() {});
+
+        assertThat(response.getBody()).hasSize(unfilteredFactsCount);
+    }
+
+    @Test
+    public void shouldReturnFilteredFactsWithQueryParameter() throws Exception {
+        final Integer filteredFactsCount = 11;
+        final String queryParameter = "Egypt";
+
+        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
+                String.format("/facts?q=%s", queryParameter),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<FactDTO>>() {});
+
+        assertThat(response.getBody()).hasSize(filteredFactsCount);
+    }
+
+    @Test
+    public void shouldReturnSpecifiedFactsWithNoFilter() throws Exception {
+        final Integer limitAmount = 5;
+
+        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
+                String.format("/facts?limit=%d", limitAmount),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<FactDTO>>() {});
+
+        assertThat(response.getBody()).hasSize(limitAmount);
+    }
+
+    @Test
+    public void shouldReturnSpecifiedFactsWithQueryFilter() throws Exception {
+        final Integer limitAmount = 2;
+        final String queryParameter = "Egypt";
+
+        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
+                String.format("/facts?q=%s&limit=%d", queryParameter, limitAmount),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<FactDTO>>() {});
+
+        assertThat(response.getBody()).hasSize(limitAmount);
+    }
 }
