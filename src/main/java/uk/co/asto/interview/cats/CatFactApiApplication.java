@@ -4,13 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Core spring boot application for running the Cat Fact Service
  */
-@ComponentScan({"uk.co.asto"})
 @SpringBootApplication
 public class CatFactApiApplication {
 

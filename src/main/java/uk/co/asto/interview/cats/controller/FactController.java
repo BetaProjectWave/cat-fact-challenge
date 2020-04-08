@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/facts")
 public class FactController {
-    private static final Logger LOG = LoggerFactory.getLogger(FactController.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(FactController.class);
 
     private final RestTemplate restTemplate;
 
@@ -26,11 +26,11 @@ public class FactController {
         this.restTemplate = restTemplate;
     }
 
-    @GetMapping(path = "")
+    @GetMapping
     public ResponseEntity<List<FactDTO>> getCatFacts() {
         ResponseEntity<Map> response = restTemplate.getForEntity("/facts?limit=1000", Map.class);
 
-        List<FactDTO> facts = new ArrayList<FactDTO>();
+        List<FactDTO> facts = new ArrayList<>();
 
         for (Map entry : (List<Map>) response.getBody().get("data")) {
             facts.add(new FactDTO((String) entry.get("fact")));
