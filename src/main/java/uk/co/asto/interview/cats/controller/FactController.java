@@ -28,9 +28,9 @@ public class FactController {
 
     @GetMapping
     public ResponseEntity<List<FactDTO>> getCatFacts() {
-        ResponseEntity<Map> response = restTemplate.getForEntity("/facts?limit=1000", Map.class);
+        final ResponseEntity<Map> response = restTemplate.getForEntity("/facts?limit=1000", Map.class);
 
-        List<FactDTO> facts = new ArrayList<>();
+        final List<FactDTO> facts = new ArrayList<>();
 
         for (Map entry : (List<Map>) response.getBody().get("data")) {
             facts.add(new FactDTO((String) entry.get("fact")));
