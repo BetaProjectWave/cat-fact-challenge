@@ -1,5 +1,7 @@
 package uk.co.asto.interview.cats.controller;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.co.asto.interview.cats.model.BreedDTO;
+import uk.co.asto.interview.cats.model.FactDTO;
 
 import java.util.List;
 
@@ -20,14 +23,61 @@ public class BreedControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Test
-    public void shouldReturnHttp200OnSuccess() throws Exception {
-        ResponseEntity<List<BreedDTO>> response = this.restTemplate.exchange(
-                "/breeds",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {});
+    @Nested
+    @DisplayName("/breeds endpoint")
+    class BreedsEndpoint {
+        @Test
+        public void shouldReturnHttp200OnSuccess() throws Exception {
+            final ResponseEntity<List<BreedDTO>> response = restTemplate.exchange(
+                    "/breeds",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        }
+
+        @Test
+        public void shouldReturnAllBreedsUnfiltered() {
+            final Integer expectedNumberOfBreeds = 25;
+
+            final ResponseEntity<List<BreedDTO>> response = restTemplate.exchange(
+                    "/breeds",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
+
+            assertThat(response.getBody()).hasSize(expectedNumberOfBreeds);
+        }
+    }
+
+    @Nested
+    @DisplayName("/breeds endpoint basic features")
+    class BreedsFeatures {
+        @Test
+        public void shouldReturnSpecifiedBreedsWithLimitParam() throws Exception {
+            final Integer numberToFetch = 10;
+
+            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+                    String.format("/breeds?limit=%d", numberToFetch),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
+
+            assertThat(response.getBody()).hasSize(numberToFetch);
+        }
+
+        @Test
+        public void shouldReturnEmptyListIfLimitIsZero() {
+            final Integer numberToFetch = 0;
+
+            final ResponseEntity<List<BreedDTO>> response = restTemplate.exchange(
+                    String.format("/breeds?limit=%d", numberToFetch),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
+
+            assertThat(response.getBody()).isEmpty();
+        }
     }
 }

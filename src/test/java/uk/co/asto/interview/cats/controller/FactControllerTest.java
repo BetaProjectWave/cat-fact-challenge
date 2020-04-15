@@ -1,5 +1,8 @@
 package uk.co.asto.interview.cats.controller;
 
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,69 +23,80 @@ public class FactControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Test
-    public void shouldReturnHttp200OnSuccess() throws Exception {
-        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
-                "/facts",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {}
-        );
+    @Nested
+    @DisplayName("/facts endpoint tests")
+    class FactsEndpoint {
+        @Test
+        public void shouldReturnHttp200OnSuccess() throws Exception {
+            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+                    "/facts",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {}
+            );
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        }
+
+        @Test
+        public void shouldReturnAllFactsUnfiltered() throws Exception {
+            final Integer unfilteredFactsCount = 332;
+
+            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+                    "/facts",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
+
+            assertThat(response.getBody()).hasSize(unfilteredFactsCount);
+        }
     }
 
-    @Test
-    public void shouldReturnAllFactsWithNoFilter() throws Exception {
-        final Integer unfilteredFactsCount = 332;
+    @Nested
+    @DisplayName("/facts endpoint basic features")
+    class FactsEndpointFeatures {
+        @Test
+        public void shouldReturnExpectedFilteredFactsCountWithQueryParameter() throws Exception {
+            final Integer filteredFactsCount = 11;
+            final String queryParameter = "Egypt";
 
-        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
-                "/facts",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {});
+            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+                    String.format("/facts?q=%s", queryParameter),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
 
-        assertThat(response.getBody()).hasSize(unfilteredFactsCount);
-    }
+            assertThat(response.getBody()).hasSize(filteredFactsCount);
+        }
 
-    @Test
-    public void shouldReturnFilteredFactsWithQueryParameter() throws Exception {
-        final Integer filteredFactsCount = 11;
-        final String queryParameter = "Egypt";
+        @Test
+        public void shouldReturnEmptyListIfSearchTermDoesNotMatch() {
+            final String nonExistentTerm = "DogsAreBetter";
 
-        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
-                String.format("/facts?q=%s", queryParameter),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {});
+            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+                    String.format("/facts?q=%s", nonExistentTerm),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
 
-        assertThat(response.getBody()).hasSize(filteredFactsCount);
-    }
+            assertThat(response.getBody()).isEmpty();
+        }
 
-    @Test
-    public void shouldReturnSpecifiedFactsWithNoFilter() throws Exception {
-        final Integer limitAmount = 5;
+        @Test
+        public void shouldReturnAllResultsContainingSearchTerm() {
+            final String searchTerm = "Egypt";
+            final SoftAssertions softly = new SoftAssertions();
 
-        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
-                String.format("/facts?limit=%d", limitAmount),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {});
+            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+                    String.format("/facts?q=%s", searchTerm),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {});
 
-        assertThat(response.getBody()).hasSize(limitAmount);
-    }
+            response.getBody().stream()
+                    .forEach(fact -> softly.assertThat(fact.getFact()).containsIgnoringCase(searchTerm));
 
-    @Test
-    public void shouldReturnSpecifiedFactsWithQueryFilter() throws Exception {
-        final Integer limitAmount = 2;
-        final String queryParameter = "Egypt";
-
-        ResponseEntity<List<FactDTO>> response = this.restTemplate.exchange(
-                String.format("/facts?q=%s&limit=%d", queryParameter, limitAmount),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {});
-
-        assertThat(response.getBody()).hasSize(limitAmount);
+            softly.assertAll();
+        }
     }
 }

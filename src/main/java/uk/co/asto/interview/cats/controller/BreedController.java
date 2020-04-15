@@ -28,9 +28,9 @@ public class BreedController {
 
     @GetMapping
     public ResponseEntity<List<BreedDTO>> getCatBreeds() {
-        ResponseEntity<Map> response = restTemplate.getForEntity("/breeds", Map.class);
+        final ResponseEntity<Map> response = restTemplate.getForEntity("/breeds", Map.class);
 
-        List<BreedDTO> breeds = new ArrayList<>();
+        final List<BreedDTO> breeds = new ArrayList<>();
 
         for (Map entry : (List<Map>) response.getBody().get("data")) {
             breeds.add(new BreedDTO(
