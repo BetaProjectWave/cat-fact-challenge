@@ -9,14 +9,37 @@ Initial endpoints have been defined at `/facts` and `/breeds` which will return 
 
 We would like you to add to this application with the following requirements:
 
-**Basic Requirements**
+#### Basic Requirements
 
-* Expose suitably designed and implemented endpoints to retrieve the data from the `Cat Facts API Service`
+* Expose suitably designed and implemented endpoints to retrieve the data from the `Cat Facts API Service` (already done for you 👍)
 * Amend the `/facts` endpoint to return `fact`s filtered by an optional `q` parameter, for example `?q=Egypt`
 * Add a feature that allows a user to limit the number of `breed`s that are returned from the `/breeds` endpoint based on an optional parameter
-* Show a data summary response showing the count of all breeds of cats grouped by their `coat` properties
+* Add an appropriate endpoint and show a data summary response showing the count of all breeds of cats grouped by their `coat` properties
+    * The format of the response body can be either one of the following (up to you):
+    
+            // #1
+            [
+                {
+                    "Semi-long": 2
+                },
+                ...
+            ]
+    
+            // #2
+            [
+                {
+                    "coat": "Semi-long",
+                    "count": 2
+                },
+                ...
+            ]
+     
+NOTE: While working through this exercise feel free to refactor and amend the code and the project structure as you see fit, although be 
+prepared to explain your reasoning and judgement. As examples, you might consider things such as DRY, readability, ease-of-testing, separation 
+of concerns, code-cleanliness, approachability/ accessibility etc.            
 
-**Stretch Goals**
+
+#### Stretch Goals
 
 * Return `breed`s filtered by either a provided `coat` parameter AND/OR a provided `country` parameter
 * Allow a specific `breed` record to be retrieved by a path parameter of the `breed` name
