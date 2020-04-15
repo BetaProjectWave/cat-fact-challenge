@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/breeds")
 public class BreedController {
-    private static final Logger LOG = LoggerFactory.getLogger(BreedController.class.getSimpleName());
+    private static final Logger LOG = LoggerFactory.getLogger(BreedController.class);
 
     private final RestTemplate restTemplate;
 
@@ -26,11 +26,11 @@ public class BreedController {
         this.restTemplate = restTemplate;
     }
 
-    @GetMapping(path = "")
+    @GetMapping
     public ResponseEntity<List<BreedDTO>> getCatBreeds() {
         ResponseEntity<Map> response = restTemplate.getForEntity("/breeds", Map.class);
 
-        List<BreedDTO> breeds = new ArrayList<BreedDTO>();
+        List<BreedDTO> breeds = new ArrayList<>();
 
         for (Map entry : (List<Map>) response.getBody().get("data")) {
             breeds.add(new BreedDTO(
