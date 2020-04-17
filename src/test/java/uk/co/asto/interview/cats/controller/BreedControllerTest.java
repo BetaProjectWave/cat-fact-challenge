@@ -10,8 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.co.asto.interview.cats.model.BreedDTO;
-import uk.co.asto.interview.cats.model.FactDTO;
+import uk.co.asto.interview.cats.model.Breed;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class BreedControllerTest {
     class BreedsEndpoint {
         @Test
         public void shouldReturnHttp200OnSuccess() throws Exception {
-            final ResponseEntity<List<BreedDTO>> response = restTemplate.exchange(
+            final ResponseEntity<List<Breed>> response = restTemplate.exchange(
                     "/breeds",
                     HttpMethod.GET,
                     null,
@@ -41,7 +40,7 @@ public class BreedControllerTest {
         public void shouldReturnAllBreedsUnfiltered() {
             final Integer expectedNumberOfBreeds = 25;
 
-            final ResponseEntity<List<BreedDTO>> response = restTemplate.exchange(
+            final ResponseEntity<List<Breed>> response = restTemplate.exchange(
                     "/breeds",
                     HttpMethod.GET,
                     null,
@@ -58,7 +57,7 @@ public class BreedControllerTest {
         public void shouldReturnSpecifiedBreedsWithLimitParam() throws Exception {
             final Integer numberToFetch = 10;
 
-            final ResponseEntity<List<FactDTO>> response = restTemplate.exchange(
+            final ResponseEntity<List<Breed>> response = restTemplate.exchange(
                     String.format("/breeds?limit=%d", numberToFetch),
                     HttpMethod.GET,
                     null,
@@ -71,7 +70,7 @@ public class BreedControllerTest {
         public void shouldReturnEmptyListIfLimitIsZero() {
             final Integer numberToFetch = 0;
 
-            final ResponseEntity<List<BreedDTO>> response = restTemplate.exchange(
+            final ResponseEntity<List<Breed>> response = restTemplate.exchange(
                     String.format("/breeds?limit=%d", numberToFetch),
                     HttpMethod.GET,
                     null,

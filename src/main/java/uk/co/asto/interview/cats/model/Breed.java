@@ -3,7 +3,7 @@ package uk.co.asto.interview.cats.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BreedDTO {
+public class Breed {
     private final String breed;
     private final String country;
     private final String origin;
@@ -11,7 +11,7 @@ public class BreedDTO {
     private final String pattern;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public BreedDTO(
+    public Breed(
             @JsonProperty("breed") final String breed,
             @JsonProperty("country") final String country,
             @JsonProperty("origin") final String origin,
