@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import uk.co.asto.interview.cats.model.BreedDTO;
+import uk.co.asto.interview.cats.model.Breed;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +27,13 @@ public class BreedController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BreedDTO>> getCatBreeds() {
+    public ResponseEntity<List<Breed>> getCatBreeds() {
         final ResponseEntity<Map> response = restTemplate.getForEntity("/breeds", Map.class);
 
-        final List<BreedDTO> breeds = new ArrayList<>();
+        final List<Breed> breeds = new ArrayList<>();
 
         for (Map entry : (List<Map>) response.getBody().get("data")) {
-            breeds.add(new BreedDTO(
+            breeds.add(new Breed(
                     (String) entry.get("breed"),
                     (String) entry.get("country"),
                     (String) entry.get("origin"),

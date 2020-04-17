@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import uk.co.asto.interview.cats.model.FactDTO;
+import uk.co.asto.interview.cats.model.Fact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +27,13 @@ public class FactController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FactDTO>> getCatFacts() {
+    public ResponseEntity<List<Fact>> getCatFacts() {
         final ResponseEntity<Map> response = restTemplate.getForEntity("/facts?limit=1000", Map.class);
 
-        final List<FactDTO> facts = new ArrayList<>();
+        final List<Fact> facts = new ArrayList<>();
 
         for (Map entry : (List<Map>) response.getBody().get("data")) {
-            facts.add(new FactDTO((String) entry.get("fact")));
+            facts.add(new Fact((String) entry.get("fact")));
         }
 
         return ResponseEntity.ok().body(facts);
